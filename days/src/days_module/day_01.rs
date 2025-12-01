@@ -12,7 +12,29 @@ impl Day for Day01 {
     }
 
     fn part_a(&self, input: &String) -> String {
-        "".to_string()
+        let mut dial: isize = 50;
+        let mut zero_count = 0;
+
+        for line in input.lines() {
+            let offset = line[1..].parse::<isize>().unwrap();
+            match line.chars().nth(0).unwrap() {
+                'L' => {
+                    dial -= offset;
+                    dial += 100;
+                    dial %= 100;
+                }
+                'R' => {
+                    dial += offset;
+                    dial %= 100;
+                }
+                _ => panic!("Unknown direction: {}", line),
+            }
+            if dial == 0 {
+                zero_count += 1;
+            }
+        }
+
+        zero_count.to_string()
     }
 
     fn part_b(&self, input: &String) -> String {

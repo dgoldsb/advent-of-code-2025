@@ -17,12 +17,12 @@ use std::time::Instant;
 use tokio;
 
 async fn execute_day(day: &Box<dyn Day>) -> Result<(String, String), Box<dyn std::error::Error>> {
-    let input = fetch_input_with_cache(2024, day.get_index()).await?;
+    let input = fetch_input_with_cache(2025, day.get_index()).await?;
     let day_index = day.get_index();
     let solution_a = day.part_a(&input);
-    submit_answer(2024, day_index, 1, &solution_a).await?;
+    submit_answer(2025, day_index, 1, &solution_a).await?;
     let solution_b = day.part_b(&input);
-    submit_answer(2024, day_index, 2, &solution_b).await?;
+    submit_answer(2025, day_index, 2, &solution_b).await?;
     Ok((solution_a, solution_b))
 }
 
