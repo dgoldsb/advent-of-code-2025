@@ -20,8 +20,10 @@ impl Day for Day01 {
             match line.chars().nth(0).unwrap() {
                 'L' => {
                     dial -= offset;
-                    dial += 100;
                     dial %= 100;
+                    if dial < 0 {
+                        dial += 100;
+                    }
                 }
                 'R' => {
                     dial += offset;
@@ -38,7 +40,45 @@ impl Day for Day01 {
     }
 
     fn part_b(&self, input: &String) -> String {
-        "".to_string()
+        let mut dial: isize = 50;
+        let mut click_count = 0;
+
+        for line in input.lines() {
+            println!("{}, start {}", line, dial);
+            let dial_start = dial;
+            let offset = line[1..].parse::<isize>().unwrap();
+            match line.chars().nth(0).unwrap() {
+                'L' => {
+                    dial -= offset;
+
+                    // Check how often we pass 0.
+                    if dial_start != 0 {
+                        click_count += (offset + (100 - dial_start)) / 100;
+                    } else {
+                        click_count += offset / 100;
+                    }
+
+                    // Move the dial.
+                    dial %= 100;
+                    if dial < 0 {
+                        dial += 100;
+                    }
+                }
+                'R' => {
+                    dial += offset;
+
+                    // Check how often we pass 0.
+                    click_count += (offset + dial_start) / 100;
+
+                    // Move the dial.
+                    dial %= 100;
+                }
+                _ => panic!("Unknown direction: {}", line),
+            }
+            println!("{}", click_count);
+        }
+
+        click_count.to_string()
     }
 }
 

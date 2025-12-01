@@ -30,17 +30,17 @@ async fn execute_day(day: &Box<dyn Day>) -> Result<(String, String), Box<dyn std
 async fn main() {
     let mut days: Vec<Box<dyn Day>> = Vec::new();
     days.push(Box::new(Day01 {}));
-    days.push(Box::new(Day02 {}));
-    days.push(Box::new(Day03 {}));
-    days.push(Box::new(Day04 {}));
-    days.push(Box::new(Day05 {}));
-    days.push(Box::new(Day06 {}));
-    days.push(Box::new(Day07 {}));
-    days.push(Box::new(Day08 {}));
-    days.push(Box::new(Day09 {}));
-    days.push(Box::new(Day10 {}));
-    days.push(Box::new(Day11 {}));
-    days.push(Box::new(Day12 {}));
+    // days.push(Box::new(Day02 {}));
+    // days.push(Box::new(Day03 {}));
+    // days.push(Box::new(Day04 {}));
+    // days.push(Box::new(Day05 {}));
+    // days.push(Box::new(Day06 {}));
+    // days.push(Box::new(Day07 {}));
+    // days.push(Box::new(Day08 {}));
+    // days.push(Box::new(Day09 {}));
+    // days.push(Box::new(Day10 {}));
+    // days.push(Box::new(Day11 {}));
+    // days.push(Box::new(Day12 {}));
 
     let start = Instant::now();
     println!(
