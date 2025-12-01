@@ -44,7 +44,6 @@ impl Day for Day01 {
         let mut click_count = 0;
 
         for line in input.lines() {
-            println!("{}, start {}", line, dial);
             let dial_start = dial;
             let offset = line[1..].parse::<isize>().unwrap();
             match line.chars().nth(0).unwrap() {
@@ -75,7 +74,6 @@ impl Day for Day01 {
                 }
                 _ => panic!("Unknown direction: {}", line),
             }
-            println!("{}", click_count);
         }
 
         click_count.to_string()
