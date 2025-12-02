@@ -30,7 +30,7 @@ async fn execute_day(day: &Box<dyn Day>) -> Result<(String, String), Box<dyn std
 async fn main() {
     let mut days: Vec<Box<dyn Day>> = Vec::new();
     days.push(Box::new(Day01 {}));
-    // days.push(Box::new(Day02 {}));
+    days.push(Box::new(Day02 {}));
     // days.push(Box::new(Day03 {}));
     // days.push(Box::new(Day04 {}));
     // days.push(Box::new(Day05 {}));
