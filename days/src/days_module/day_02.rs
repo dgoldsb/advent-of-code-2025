@@ -33,12 +33,15 @@ fn find_all_invalid_ids(range: &str) -> Vec<usize> {
         for repeat_split in 1..=(candidate_string.len() + 1) / 2 {
             let mut built_string = String::new();
 
+            if candidate_string.len() == repeat_split {
+                continue;
+            }
+
             while built_string.len() < candidate_string.len() {
                 built_string += &candidate_string[..repeat_split];
             }
 
             if &built_string == candidate_string {
-                println!("{}", candidate);
                 invalid_ids.push(candidate);
             }
         }
