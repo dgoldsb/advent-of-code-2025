@@ -8,7 +8,7 @@ fn find_highest_joltage(input: &str, digit_count: usize) -> usize {
 
     for _ in 0..digit_count {
         digits_left -= 1;
-        let mut highest_digit = '/';  // cheeky, ASCII value is one below '0'
+        let mut highest_digit = '/'; // cheeky, ASCII value is one below '0'
         let mut digit_index = 0;
 
         for i in start_index..chars.len() - digits_left {
@@ -22,7 +22,11 @@ fn find_highest_joltage(input: &str, digit_count: usize) -> usize {
         start_index = digit_index + 1;
     }
 
-    digits.into_iter().collect::<String>().parse::<usize>().unwrap()
+    digits
+        .into_iter()
+        .collect::<String>()
+        .parse::<usize>()
+        .unwrap()
 }
 
 pub struct Day03 {}
