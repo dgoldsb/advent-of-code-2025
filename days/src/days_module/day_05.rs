@@ -12,7 +12,30 @@ impl Day for Day05 {
     }
 
     fn part_a(&self, input: &String) -> String {
-        "".to_string()
+        let split = input.split_once("\n\n").unwrap();
+
+        // Find the ranges.
+        let mut ranges = Vec::new();
+        for line in split.0.lines() {
+            let split_line = line.split_once("-").unwrap();
+            ranges.push(
+                split_line.0.parse::<usize>().unwrap()..=split_line.1.parse::<usize>().unwrap(),
+            );
+        }
+
+        // Count the fresh ingredients.
+        let mut count = 0;
+        for line in split.1.lines() {
+            let sku = line.parse::<usize>().unwrap();
+            for range in ranges.iter() {
+                if range.contains(&sku) {
+                    count += 1;
+                    break;
+                }
+            }
+        }
+
+        count.to_string()
     }
 
     fn part_b(&self, input: &String) -> String {
