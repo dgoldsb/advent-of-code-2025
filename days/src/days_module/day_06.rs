@@ -1,7 +1,7 @@
 use crate::days_module::day::Day;
 use lazy_static::lazy_static;
 
-use helpers::find_usize;
+use helpers::{find_usize, transpose_string};
 use regex::Regex;
 
 pub fn find_operators(s: &str) -> Vec<char> {
@@ -48,7 +48,31 @@ impl Day for Day06 {
     }
 
     fn part_b(&self, input: &String) -> String {
-        "".to_string()
+        let regex = Regex::new(r"\n\s*\n").unwrap();
+        let raw_transposed_input = transpose_string(input);
+        let transposed_input = regex.replace_all(&raw_transposed_input, "\n\n\n");
+        let mut total = 0;
+
+        for equation in transposed_input.split("\n\n\n") {
+            let numbers = find_usize(&equation);
+            let operator = find_operators(&equation)[0];
+            let mut answer = match operator {
+                '+' => 0,
+                '*' => 1,
+                _ => unreachable!(),
+            };
+            for number in numbers {
+                match operator {
+                    '+' => answer += number,
+                    '*' => answer *= number,
+                    _ => unreachable!(),
+                }
+            }
+
+            total += answer;
+        }
+
+        total.to_string()
     }
 }
 
