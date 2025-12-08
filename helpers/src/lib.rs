@@ -1,6 +1,7 @@
 pub mod cube;
 pub mod cycle;
 pub mod grid;
+pub mod union_find;
 use lazy_static::lazy_static;
 use regex::Regex;
 use reqwest::Client;
