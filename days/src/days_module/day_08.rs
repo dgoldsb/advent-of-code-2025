@@ -1,8 +1,6 @@
 use crate::days_module::day::Day;
 use helpers::{euclidean_distance, find_numbers};
-use helpers::union_find::union_find::UnionFind;
 use std::collections::{HashMap, HashSet, VecDeque};
-use std::hash::Hash;
 
 pub struct Day08 {}
 
@@ -114,16 +112,17 @@ impl Day for Day08 {
         edges.sort_by(|a, b| a.partial_cmp(b).unwrap());
         // TODO: End duplicate code.
 
-        let mut union_find = UnionFind::new();
-        for edge in edges {
-            union_find.union(edge.1, edge.2);
+        // Build the neighbor map incrementally, test each time.
+        let mut neighbors: HashMap<&[u32], HashSet<&[u32]>> = HashMap::new();
 
-            println!("{:?}", union_find.size.iter().max().unwrap());
-            if *union_find.size.iter().max().unwrap() == (numbers.len() / 3) {
-                println!("{}", (edge.1[0] * edge.2[0]).to_string());
+        for (i, edge) in edges.iter().enumerate() {
+            neighbors.entry(edge.1).or_default().insert(edge.2);
+            neighbors.entry(edge.2).or_default().insert(edge.1);
 
-                // 2639735259 too low
-                panic!();
+            // Is it fully connected?
+            let circuit = reachable(&neighbors, edge.1);
+            if circuit.len() * 3 == numbers.len() {
+                return (edge.1[0] as u128 * edge.2[0] as u128).to_string();
             }
         }
 
