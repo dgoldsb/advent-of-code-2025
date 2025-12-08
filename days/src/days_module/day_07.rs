@@ -1,7 +1,7 @@
 use crate::days_module::day::Day;
 use helpers::grid::grid::Grid;
 use helpers::grid::grid_index::{Direction, GridIndex};
-use std::collections::{BinaryHeap, HashMap, HashSet, VecDeque};
+use std::collections::{BinaryHeap, HashMap, HashSet};
 use std::str::FromStr;
 
 pub struct Day07 {}

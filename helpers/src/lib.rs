@@ -5,12 +5,12 @@ use lazy_static::lazy_static;
 use regex::Regex;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
-use std::cmp::{max, min};
 use std::collections::{HashMap, HashSet};
 use std::env;
 use std::fs;
 use std::io::Write;
 use std::path::Path;
+use std::str::FromStr;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct SubmissionRecord {
@@ -232,8 +232,25 @@ pub fn lcm(numbers: &Vec<u128>) -> u128 {
     numbers.iter().fold(1, |acc, &x| base_lcm(acc, x))
 }
 
-pub fn manhattan_distance(start: &(usize, usize), end: &(usize, usize)) -> usize {
-    (max(start.0, end.0) - min(start.0, end.0)) + (max(start.1, end.1) - min(start.1, end.1))
+pub fn manhattan_distance(start: &[usize], end: &[usize]) -> usize {
+    start.iter()
+        .zip(end.iter())
+        .map(|(a, b)| a.max(b) - a.min(b)) // or (a as isize - b as isize).abs()
+        .sum()
+}
+
+pub fn euclidean_distance<T>(a: &[T], b: &[T]) -> f64
+where
+    T: Into<f64> + Copy,
+{
+    a.iter()
+        .zip(b.iter())
+        .map(|(x, y)| {
+            let dx = (*x).into() - (*y).into();
+            dx * dx
+        })
+        .sum::<f64>()
+        .sqrt()
 }
 
 pub fn gauss_jordan(mut matrix: Vec<Vec<f64>>) -> Option<Vec<f64>> {
@@ -283,23 +300,16 @@ pub fn gauss_jordan(mut matrix: Vec<Vec<f64>>) -> Option<Vec<f64>> {
     Some(solution)
 }
 
-pub fn find_numbers(s: &str) -> Vec<isize> {
-    lazy_static! {
-        static ref RE: Regex = Regex::new(r"-?\d+").unwrap();
-    }
-
-    RE.find_iter(s)
-        .filter_map(|digits| digits.as_str().parse().ok())
-        .collect()
-}
-
-pub fn find_usize(s: &str) -> Vec<usize> {
+pub fn find_numbers<T>(s: &str) -> Vec<T>
+where
+    T: FromStr,
+{
     lazy_static! {
         static ref RE: Regex = Regex::new(r"\d+").unwrap();
     }
 
     RE.find_iter(s)
-        .filter_map(|digits| digits.as_str().parse().ok())
+        .filter_map(|digits| digits.as_str().parse::<T>().ok())
         .collect()
 }
 

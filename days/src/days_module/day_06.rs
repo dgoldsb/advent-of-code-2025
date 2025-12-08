@@ -1,7 +1,7 @@
 use crate::days_module::day::Day;
 use lazy_static::lazy_static;
 
-use helpers::{find_usize, transpose_string};
+use helpers::{find_numbers, transpose_string};
 use regex::Regex;
 
 pub fn find_operators(s: &str) -> Vec<char> {
@@ -26,7 +26,7 @@ impl Day for Day06 {
     }
 
     fn part_a(&self, input: &String) -> String {
-        let numbers = find_usize(input);
+        let numbers = find_numbers(input);
         let operators = find_operators(input);
         let equation_count = operators.len();
 
@@ -54,7 +54,7 @@ impl Day for Day06 {
         let mut total = 0;
 
         for equation in transposed_input.split("\n\n\n") {
-            let numbers = find_usize(&equation);
+            let numbers: Vec<usize> = find_numbers(&equation);
             let operator = find_operators(&equation)[0];
             let mut answer = match operator {
                 '+' => 0,

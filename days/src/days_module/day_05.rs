@@ -1,6 +1,5 @@
 use crate::days_module::day::Day;
 use std::cmp::min;
-use std::collections::VecDeque;
 
 pub struct Day05 {}
 

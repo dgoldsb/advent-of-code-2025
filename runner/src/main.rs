@@ -36,7 +36,7 @@ async fn main() {
     days.push(Box::new(Day05 {}));
     days.push(Box::new(Day06 {}));
     days.push(Box::new(Day07 {}));
-    // days.push(Box::new(Day08 {}));
+    days.push(Box::new(Day08 {}));
     // days.push(Box::new(Day09 {}));
     // days.push(Box::new(Day10 {}));
     // days.push(Box::new(Day11 {}));
