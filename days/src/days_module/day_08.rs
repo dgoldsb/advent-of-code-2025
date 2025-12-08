@@ -1,6 +1,6 @@
-use std::collections::{HashMap, HashSet, VecDeque};
-use helpers::{euclidean_distance, find_numbers};
 use crate::days_module::day::Day;
+use helpers::{euclidean_distance, find_numbers};
+use std::collections::{HashMap, HashSet, VecDeque};
 
 pub struct Day08 {}
 
@@ -27,6 +27,45 @@ pub fn reachable<'a>(
     visited
 }
 
+fn solve(numbers: Vec<u32>, count: usize) -> Vec<usize> {
+    let mut coords = HashSet::new();
+    for chunk in numbers.chunks(3) {
+        coords.insert(chunk);
+    }
+
+    // Calculate edges, sort edge members.
+    let mut edges = Vec::new();
+    for a in &coords {
+        for b in &coords {
+            if a != b {
+                let distance = euclidean_distance(a, b);
+                edges.push((distance, a, b));
+            }
+        }
+    }
+    edges.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    let shortest_edges = edges.iter().take(count);
+
+    // Build the neighbor map.
+    let mut neighbors: HashMap<&[u32], HashSet<&[u32]>> = HashMap::new();
+    for edge in shortest_edges {
+        neighbors.entry(edge.1).or_default().insert(edge.2);
+    }
+
+    // Find the circuit sizes.
+    let mut visited_circuits = Vec::new();
+    for node in neighbors.keys() {
+        let circuit = reachable(&neighbors, node);
+
+        if visited_circuits.contains(&circuit) {
+            continue;
+        }
+
+        visited_circuits.push(circuit);
+    }
+
+    visited_circuits.iter().map(|c| c.len()).collect::<Vec<_>>()
+}
 
 impl Day for Day08 {
     fn get_id(&self) -> String {
@@ -39,52 +78,50 @@ impl Day for Day08 {
 
     fn part_a(&self, input: &String) -> String {
         let numbers: Vec<u32> = find_numbers(input);
-        let mut coords = HashSet::new();
-        for chunk in numbers.chunks(3) {
-            coords.insert(chunk);
-        }
-
-        // Calculate edges, sort edge members.
-        let mut edges = Vec::new();
-        for a in &coords {
-            for b in &coords {
-                if a != b {
-                    let distance = euclidean_distance(a, b);
-                    edges.push((distance, a, b));
-                }
-            }
-        }
-        edges.sort_by(|a, b| a.partial_cmp(b).unwrap());
-        let shortest_edges = edges.iter().take(2000);
-
-        // Build the neighbor map.
-        let mut neighbors: HashMap<&[u32], HashSet<&[u32]>> = HashMap::new();
-        for edge in shortest_edges {
-            neighbors.entry(edge.1).or_default().insert(edge.2);
-        }
-
-        // Find the circuit sizes.
-        let mut visited_circuits = Vec::new();
-        let mut circuit_sizes = Vec::new();
-        for node in neighbors.keys() {
-            let circuit = reachable(&neighbors, node);
-
-            if visited_circuits.contains(&circuit) {
-                continue;
-            }
-
-            circuit_sizes.push(circuit.len());
-            visited_circuits.push(circuit);
-        }
+        let mut circuit_sizes = solve(numbers, 2000);
 
         // Multiply sizes of 3 biggest.
         circuit_sizes.sort();
         circuit_sizes.reverse();
-        circuit_sizes.iter().take(3).fold(1, |a, b| a * b).to_string()
+        circuit_sizes
+            .iter()
+            .take(3)
+            .fold(1, |a, b| a * b)
+            .to_string()
     }
 
     fn part_b(&self, input: &String) -> String {
-        "".to_string()
+        let numbers: Vec<u32> = find_numbers(input);
+        // TODO: iterate by two.
+        // TODO: do not recompute, just extend each time.
+        for i in 2000..(numbers.len() * 2) {
+            println!("{}", i);
+            let circuit_sizes = solve(numbers.clone(), i);
+
+            if circuit_sizes.len() == 1 && circuit_sizes[0] * 3 == numbers.len() {
+                // Find the last edge we added...
+                // TODO: duplicate code.
+                let mut coords = HashSet::new();
+                for chunk in numbers.chunks(3) {
+                    coords.insert(chunk);
+                }
+
+                let mut edges = Vec::new();
+                for a in &coords {
+                    for b in &coords {
+                        if a != b {
+                            let distance = euclidean_distance(a, b);
+                            edges.push((distance, a, b));
+                        }
+                    }
+                }
+                edges.sort_by(|a, b| a.partial_cmp(b).unwrap());
+                let key_edge = edges.iter().nth(i).unwrap();
+                return (key_edge.1[0] * key_edge.2[0]).to_string();
+            }
+        }
+
+        unreachable!()
     }
 }
 

@@ -233,7 +233,8 @@ pub fn lcm(numbers: &Vec<u128>) -> u128 {
 }
 
 pub fn manhattan_distance(start: &[usize], end: &[usize]) -> usize {
-    start.iter()
+    start
+        .iter()
         .zip(end.iter())
         .map(|(a, b)| a.max(b) - a.min(b)) // or (a as isize - b as isize).abs()
         .sum()
