@@ -92,32 +92,42 @@ impl Day for Day08 {
 
     fn part_b(&self, input: &String) -> String {
         let numbers: Vec<u32> = find_numbers(input);
-        // TODO: iterate by two.
-        // TODO: do not recompute, just extend each time.
-        for i in 2000..(numbers.len() * 2) {
-            println!("{}", i);
-            let circuit_sizes = solve(numbers.clone(), i);
 
-            if circuit_sizes.len() == 1 && circuit_sizes[0] * 3 == numbers.len() {
-                // Find the last edge we added...
-                // TODO: duplicate code.
-                let mut coords = HashSet::new();
-                for chunk in numbers.chunks(3) {
-                    coords.insert(chunk);
-                }
+        // TODO: Some duplicate code.
+        let mut coords = HashSet::new();
+        for chunk in numbers.chunks(3) {
+            coords.insert(chunk);
+        }
 
-                let mut edges = Vec::new();
-                for a in &coords {
-                    for b in &coords {
-                        if a != b {
-                            let distance = euclidean_distance(a, b);
-                            edges.push((distance, a, b));
-                        }
-                    }
+        // Calculate edges, sort edge members.
+        let mut edges = Vec::new();
+        for a in &coords {
+            for b in &coords {
+                if a != b {
+                    let distance = euclidean_distance(a, b);
+                    edges.push((distance, a, b));
                 }
-                edges.sort_by(|a, b| a.partial_cmp(b).unwrap());
-                let key_edge = edges.iter().nth(i).unwrap();
-                return (key_edge.1[0] * key_edge.2[0]).to_string();
+            }
+        }
+        edges.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        // TODO: End duplicate code.
+
+        // Build the neighbor map incrementally, test each time.
+        let mut neighbors: HashMap<&[u32], HashSet<&[u32]>> = HashMap::new();
+
+        for edge in edges {
+            neighbors.entry(edge.1).or_default().insert(edge.2);
+            neighbors.entry(edge.2).or_default().insert(edge.1);
+
+            println!("{} {}", edge.1[0], edge.2[0]);
+
+            // Is it fully connected?
+            let circuit = reachable(&neighbors, edge.1);
+            if circuit.len() * 3 == numbers.len() {
+                println!("{}", (edge.1[0] * edge.2[0]).to_string());
+
+                // 2639735259 too low
+                panic!();
             }
         }
 
