@@ -1,13 +1,9 @@
-use std::cmp::{max, min};
+use crate::days_module::day::Day;
 use helpers::cube::cube::Cube;
 use helpers::find_numbers;
-use crate::days_module::day::Day;
+use std::cmp::{max, min};
 
 pub struct Day09 {}
-
-// Initial strategy: finding squares that have no intersecting edges with the outside...
-// This fails one assumption,it appears possible edges go through the square.
-// My answer 60737536 was too low.
 
 fn calculate_size(a: &[isize], b: &[isize]) -> isize {
     let x_difference = (a[0] - b[0]).abs() + 1;
@@ -67,7 +63,6 @@ impl Day for Day09 {
         let mut edges_coords = coords.clone();
         edges_coords.push(coords[0]);
 
-
         let mut biggest = 0;
         for a in &coords {
             for b in &coords {
@@ -75,27 +70,27 @@ impl Day for Day09 {
                 let mut intersects = false;
                 for i in 0..coords.len() {
                     if edge_intersects_square(edges_coords[i], edges_coords[i + 1], a, b) {
+                        if calculate_size(a, b) == 40 {
+                            println!("{:?} {:?}", a, b);
+                            println!("{:?} {:?}", edges_coords[i], edges_coords[i + 1]);
+                        }
                         intersects = true;
                         break;
                     }
                 }
 
-                // TODO: If it is external, it is invalid.
-
                 if intersects {
-                    break;
+                    continue;
                 }
 
                 // If it is valid, calculate and store the size.
                 let size = calculate_size(a, b);
                 if size > biggest {
-                    println!("{}", size);
                     biggest = size;
                 }
             }
         }
 
-        assert!(biggest > 60737536);
         biggest.to_string()
     }
 }
@@ -118,5 +113,11 @@ mod tests {
     fn test_intersection() {
         let result = edge_intersects_square(&[7, 1], &[7, 3], &[2, 3], &[11, 1]);
         assert_eq!(result, true)
+    }
+
+    #[test]
+    fn test_area() {
+        let result = calculate_size(&[11, 6], &[4, 10]);
+        assert_eq!(result, 40)
     }
 }
