@@ -3,16 +3,16 @@ use std::str::FromStr;
 
 #[derive(Clone, Eq, PartialEq, Hash)]
 pub struct Cube {
-    pub x_range: RangeInclusive<i32>,
-    pub y_range: RangeInclusive<i32>,
-    pub z_range: RangeInclusive<i32>,
+    pub x_range: RangeInclusive<isize>,
+    pub y_range: RangeInclusive<isize>,
+    pub z_range: RangeInclusive<isize>,
 }
 
 impl Cube {
     pub fn new(
-        x_range: RangeInclusive<i32>,
-        y_range: RangeInclusive<i32>,
-        z_range: RangeInclusive<i32>,
+        x_range: RangeInclusive<isize>,
+        y_range: RangeInclusive<isize>,
+        z_range: RangeInclusive<isize>,
     ) -> Self {
         Cube {
             x_range,
@@ -21,7 +21,7 @@ impl Cube {
         }
     }
 
-    pub fn drop_by(&self, z_delta: i32) -> Cube {
+    pub fn drop_by(&self, z_delta: isize) -> Cube {
         Cube {
             x_range: self.x_range.clone(),
             y_range: self.y_range.clone(),
@@ -48,7 +48,7 @@ impl Cube {
             && self.z_range.end() < other.z_range.start()
     }
 
-    pub fn z_difference(&self, other: &Cube) -> i32 {
+    pub fn z_difference(&self, other: &Cube) -> isize {
         // Calculate the absolute difference between the z-ranges.
         (self.z_range.start() - other.z_range.end()).abs()
     }
@@ -76,14 +76,14 @@ impl FromStr for Cube {
         let start_str = parts[0];
         let end_str = parts[1];
 
-        let start_coords: Vec<i32> = start_str
+        let start_coords: Vec<isize> = start_str
             .split(',')
-            .map(|s| s.trim().parse::<i32>().unwrap_or_else(|_| 0))
+            .map(|s| s.trim().parse::<isize>().unwrap_or_else(|_| 0))
             .collect();
 
-        let end_coords: Vec<i32> = end_str
+        let end_coords: Vec<isize> = end_str
             .split(',')
-            .map(|s| s.trim().parse::<i32>().unwrap_or_else(|_| 0))
+            .map(|s| s.trim().parse::<isize>().unwrap_or_else(|_| 0))
             .collect();
 
         if start_coords.len() != 3 || end_coords.len() != 3 {
