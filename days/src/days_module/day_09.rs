@@ -70,10 +70,6 @@ impl Day for Day09 {
                 let mut intersects = false;
                 for i in 0..coords.len() {
                     if edge_intersects_square(edges_coords[i], edges_coords[i + 1], a, b) {
-                        if calculate_size(a, b) == 40 {
-                            println!("{:?} {:?}", a, b);
-                            println!("{:?} {:?}", edges_coords[i], edges_coords[i + 1]);
-                        }
                         intersects = true;
                         break;
                     }
