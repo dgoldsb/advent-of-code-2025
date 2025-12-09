@@ -95,6 +95,7 @@ impl Day for Day09 {
             }
         }
 
+        assert!(biggest > 60737536);
         biggest.to_string()
     }
 }
