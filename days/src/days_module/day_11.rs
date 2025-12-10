@@ -4,7 +4,7 @@ pub struct Day11 {}
 
 impl Day for Day11 {
     fn get_id(&self) -> String {
-        "day_011".to_string()
+        "day_11".to_string()
     }
 
     fn get_index(&self) -> u8 {

@@ -82,7 +82,7 @@ fn solve_a(target: &Vec<bool>, buttons: &Vec<HashSet<usize>>) -> usize {
 
 impl Day for Day10 {
     fn get_id(&self) -> String {
-        "day_010".to_string()
+        "day_10".to_string()
     }
 
     fn get_index(&self) -> u8 {
