@@ -9,7 +9,7 @@ pub struct Grid {
 }
 
 impl Grid {
-    pub fn iter(&self) -> Iter<Cell> {
+    pub fn iter(&self) -> Iter<'_, Cell> {
         self.cells.iter()
     }
 

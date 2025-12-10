@@ -1,6 +1,12 @@
 use crate::days_module::day::Day;
+use regex::Regex;
 
 pub struct Day10 {}
+
+fn solve_line(line: &str) -> usize {
+    let start_state_regex = Regex::new(r"\[[#\.]+\]");
+    0
+}
 
 impl Day for Day10 {
     fn get_id(&self) -> String {
@@ -12,7 +18,7 @@ impl Day for Day10 {
     }
 
     fn part_a(&self, input: &String) -> String {
-        "".to_string()
+        input.lines().map(solve_line).sum::<usize>().to_string()
     }
 
     fn part_b(&self, input: &String) -> String {

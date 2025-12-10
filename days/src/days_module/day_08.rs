@@ -115,7 +115,7 @@ impl Day for Day08 {
         // Build the neighbor map incrementally, test each time.
         let mut neighbors: HashMap<&[u32], HashSet<&[u32]>> = HashMap::new();
 
-        for (i, edge) in edges.iter().enumerate() {
+        for edge in edges.iter() {
             neighbors.entry(edge.1).or_default().insert(edge.2);
             neighbors.entry(edge.2).or_default().insert(edge.1);
 
