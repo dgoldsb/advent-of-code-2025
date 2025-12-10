@@ -1,16 +1,5 @@
 use days::days_module::day::Day;
-use days::days_module::day_01::Day01;
-use days::days_module::day_02::Day02;
-use days::days_module::day_03::Day03;
-use days::days_module::day_04::Day04;
-use days::days_module::day_05::Day05;
-use days::days_module::day_06::Day06;
-use days::days_module::day_07::Day07;
-use days::days_module::day_08::Day08;
-use days::days_module::day_09::Day09;
 use days::days_module::day_10::Day10;
-use days::days_module::day_11::Day11;
-use days::days_module::day_12::Day12;
 use helpers::fetch_input_with_cache;
 use helpers::submit_answer;
 use std::time::Instant;
@@ -37,8 +26,8 @@ async fn main() {
     // days.push(Box::new(Day06 {}));
     // days.push(Box::new(Day07 {}));
     // days.push(Box::new(Day08 {}));
-    days.push(Box::new(Day09 {}));
-    // days.push(Box::new(Day10 {}));
+    // days.push(Box::new(Day09 {}));
+    days.push(Box::new(Day10 {}));
     // days.push(Box::new(Day11 {}));
     // days.push(Box::new(Day12 {}));
 
