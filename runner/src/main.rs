@@ -1,5 +1,5 @@
 use days::days_module::day::Day;
-use days::days_module::day_10::Day10;
+use days::days_module::day_11::Day11;
 use helpers::fetch_input_with_cache;
 use helpers::submit_answer;
 use std::time::Instant;
@@ -27,8 +27,8 @@ async fn main() {
     // days.push(Box::new(Day07 {}));
     // days.push(Box::new(Day08 {}));
     // days.push(Box::new(Day09 {}));
-    days.push(Box::new(Day10 {}));
-    // days.push(Box::new(Day11 {}));
+    // days.push(Box::new(Day10 {}));
+    days.push(Box::new(Day11 {}));
     // days.push(Box::new(Day12 {}));
 
     let start = Instant::now();

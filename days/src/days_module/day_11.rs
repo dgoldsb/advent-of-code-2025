@@ -1,6 +1,19 @@
+use std::collections::{HashMap, HashSet};
 use crate::days_module::day::Day;
 
 pub struct Day11 {}
+
+fn get_neighbor_map(input: &String) -> HashMap<String, HashSet<String>> {
+    let mut map: HashMap<String, HashSet<String>> = HashMap::new();
+    for line in input.lines() {
+        let split = line.split_once(": ").unwrap();
+        let key = split.0.to_string();
+        for value in split.1.split(" ") {
+            map.entry(key.trim_end_matches(":").to_string()).or_insert_with(HashSet::new).insert(value.to_string());
+        }
+    }
+    map
+}
 
 impl Day for Day11 {
     fn get_id(&self) -> String {
@@ -12,7 +25,22 @@ impl Day for Day11 {
     }
 
     fn part_a(&self, input: &String) -> String {
-        "".to_string()
+        let map = get_neighbor_map(input);
+        let mut stack = vec!["you"];
+        let mut count = 0;
+
+        while !stack.is_empty() {
+            let current = stack.pop().unwrap();
+            for next in map.get(current).unwrap() {
+                if next == "out" {
+                    count += 1;
+                } else {
+                    stack.push(next);
+                }
+            }
+        }
+        
+        count.to_string()
     }
 
     fn part_b(&self, input: &String) -> String {
