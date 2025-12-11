@@ -1,4 +1,5 @@
 use std::collections::{HashMap, HashSet};
+use std::path::Path;
 use crate::days_module::day::Day;
 
 pub struct Day11 {}
@@ -39,12 +40,46 @@ impl Day for Day11 {
                 }
             }
         }
-        
+
         count.to_string()
     }
 
     fn part_b(&self, input: &String) -> String {
-        "".to_string()
+        let mut map = get_neighbor_map(input);
+        let mut visited = HashSet::new();
+        let mut path_count_map = HashMap::new();
+
+        // Starting state.
+        for (k, v) in map {
+            if v.contains("out") {
+                *path_count_map.entry(k).or_insert(0) += 1;
+            }
+        }
+        visited.insert("out".to_string());
+
+
+        loop {
+            // Find a candidate.
+            let mut candidate_option = None;
+            for (k, v) in &map {
+                if v.is_subset(&visited) {
+                    candidate_option = Some(k.to_string());
+                }
+            }
+
+            if let Some(candidate) = candidate_option {
+                for (k, v) in map {
+                    if v.contains(&candidate) {
+                        *path_count_map.entry(k).or_insert(0) += path_count_map.get(&candidate).unwrap();
+                    }
+                }
+                visited.insert(candidate);
+            } else {
+                break;
+            }
+        }
+
+        count.to_string()
     }
 }
 
